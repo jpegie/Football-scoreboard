@@ -1,3 +1,5 @@
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtGui import QColor, QPalette
 from PyQt5.QtWidgets import QMainWindow
 
 import sb_server
@@ -6,11 +8,38 @@ from DataClasses import ServerClass
 
 class ServerApp(QMainWindow, sb_server.Ui_MainWindow):
     curr_server = ServerClass.Server()
+    teams_set = [False, False]
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setup_bindings()
+        self.curr_server.listen()
+
+        self.Button_SetTeam1.clicked.connect(lambda: self.enable_frames("SetTeam1"))
+        self.Button_SetTeam2.clicked.connect(lambda: self.enable_frames("SetTeam2"))
+
+        self.Frame_Team1.setEnabled(False)
+        self.Frame_Team2.setEnabled(False)
+        self.Frame_MatchManage.setEnabled(False)
+
+    def enable_frames(self, command):
+        if command == "SetTeam1":
+            self.teams_set[0] = True
+        elif command == "SetTeam2":
+            self.teams_set[1] = True
+
+        if (self.teams_set[0] is True) and (self.teams_set[1] is True):
+            self.Frame_Team1.setEnabled(True)
+            self.Frame_Team2.setEnabled(True)
+            self.Frame_MatchManage.setEnabled(True)
+
+
+
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        self.curr_server.close()
+        a0.accept()
 
     def setup_bindings(self):
         self.Button_Start.clicked.connect(self.curr_server.start_stop_match)

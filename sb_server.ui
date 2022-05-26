@@ -120,7 +120,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QFrame" name="frame_3">
+   <widget class="QFrame" name="Frame_Team1">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -191,7 +191,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame_4">
+   <widget class="QFrame" name="Frame_Team2">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -288,7 +288,7 @@
      <string>✅</string>
     </property>
    </widget>
-   <widget class="QFrame" name="frame_5">
+   <widget class="QFrame" name="Frame_MatchManage">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -436,13 +436,13 @@
      </rect>
     </property>
    </widget>
-   <zorder>frame_5</zorder>
+   <zorder>Frame_MatchManage</zorder>
    <zorder>frame</zorder>
    <zorder>frame_2</zorder>
    <zorder>TextBox_Team1</zorder>
    <zorder>TextBox_Team2</zorder>
-   <zorder>frame_3</zorder>
-   <zorder>frame_4</zorder>
+   <zorder>Frame_Team1</zorder>
+   <zorder>Frame_Team2</zorder>
    <zorder>Button_SetTeam1</zorder>
    <zorder>Button_SetTeam2</zorder>
    <zorder>List_Log</zorder>

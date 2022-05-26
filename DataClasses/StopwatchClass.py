@@ -38,6 +38,15 @@ class Stopwatch:
     def get_elapsed(self):
         return self.time_elapsed
 
+    def get_elapsed_as_str(self):
+        seconds = str(self.__time_elapsed[1])
+        minutes = str(self.__time_elapsed[0])
+        if len(seconds) < 2:
+            seconds = f"0{seconds}"
+        if len(minutes) < 2:
+            minutes = f"0{minutes}"
+        return f"{minutes}:{seconds}"
+
     def __start(self):
         total_seconds = 0
         if self.__time_set is True:
@@ -58,10 +67,5 @@ class Stopwatch:
                 t.sleep(1)
 
     def __update_ui(self):
-        seconds = str(self.__time_elapsed[0])
-        minutes = str(self.__time_elapsed[1])
-        if len(seconds) < 2:
-            seconds = f"0{seconds}"
-        if len(minutes) < 2:
-            minutes = f"0{minutes}"
-        self.__ui.setText(f"{seconds}:{minutes}")
+        time_str = self.get_elapsed_as_str()
+        self.__ui.setText(time_str)

@@ -22,7 +22,7 @@ class Team:
 
 class MatchInfo:
     __status = MatchStatus.NO_MATCH
-    __teams = [] * 2
+    __teams = []
     __match_time = Stopwatch()
     __log = []
     __viewers = 0
@@ -42,6 +42,18 @@ class MatchInfo:
     def status(self):
         return self.__status
 
+    @property
+    def log(self):
+        return self.__log
+
+    @property
+    def current_time(self):
+        return self.__match_time.get_elapsed_as_str()
+
+    @property
+    def teams(self):
+        return self.__teams
+
     def get_score(self, index=0):
         return self.__teams[index].score
 
@@ -51,18 +63,22 @@ class MatchInfo:
     def start(self):
         self.__status = MatchStatus.STARTED
         self.__match_time.start()
+        self.add_log_record("Match started!")
 
     def pause(self):
         self.__status = MatchStatus.PAUSED
         self.__match_time.pause()
+        self.add_log_record("Match paused!")
 
     def unpause(self):
         self.__status = MatchStatus.STARTED
         self.__match_time.unpause()
+        self.add_log_record("Match unpaused!")
 
     def stop(self):
         self.__status = MatchStatus.STOPPED
         self.__match_time.stop()
+        self.add_log_record("Match stopped!")
 
     def update_viewers(self, value):
         self.__viewers = value
@@ -85,11 +101,12 @@ class MatchInfo:
     def set_score(self, score=0, index=0):
         self.__teams[index].score = score
 
-    def do_goal(self, index=0):
+    def do_goal(self, index=0, player=""):
         self.__teams[index].score = self.__teams[index].score + 1
+        self.add_log_record(f"Goal by {player} of team {self.get_team_name(index)}")
 
     def add_log_record(self, record):
-        self.__log.append(record)
+        self.__log.append(f"🌈 {record}")
 
     def set_time_ui(self, ui):
         self.__match_time.set_ui(ui)
