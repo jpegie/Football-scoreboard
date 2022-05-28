@@ -1,15 +1,13 @@
 import socket
 import pickle
-import socketserver
 import threading
-import time
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QListWidget
 
-from DataClasses.DataClass import MatchInfo
-from DataClasses.DataClass import MatchStatus
-from DataClasses.DataClass import Team
-from DataClasses.SlimInfo import SlimMatchInfo
+from DataClasses.Common.Match import MatchInfo
+from DataClasses.Common.Match import MatchStatus
+from DataClasses.Common.Match import Team
+from DataClasses.Common.Match import SlimMatchInfo
 
 
 def first(iterable, default=None):
@@ -18,9 +16,11 @@ def first(iterable, default=None):
     return default
 
 
+UDP_MAX_SIZE = 1024  # 65535
+
+
 class Server:
 
-    UDP_MAX_SIZE = 1024  # 65535
     server_socket = socket.socket()
     host = ''
     port = 6565
@@ -35,37 +35,40 @@ class Server:
     ui_log = QListWidget
     ui_surnames = []
 
+    def __init__(self):
+        self.start_listening()
+
     def close(self):
         try:
             self.server_socket.close()
         except:
             return
 
-    def listen(self):
+    def start_listening(self):
         threading.Thread(target=self.__listen, daemon=True).start()
         # threading.Thread(target=self.__notify_viewers).start()
 
     def start_stop_match(self):
         if self.match.status == MatchStatus.NO_MATCH or self.match.status == MatchStatus.STOPPED:
             self.match.start()
-            self.__add_log_record("Match started!")
             self.ui_button_ss.setText("Stop")
+            self.__add_log_record("Match started!")
         else:
             self.match.unpause()
             self.match.stop()
-            self.__add_log_record("Match stopped!")
             self.ui_button_pause.setText("Pause")
             self.ui_button_ss.setText("Start")
+            self.__add_log_record("Match stopped!")
 
     def pause_match(self):
         if self.match.status == MatchStatus.CONTINUED or self.match.status == MatchStatus.STARTED:
             self.match.pause()
-            self.__add_log_record("Match paused!")
             self.ui_button_pause.setText("Unpause")
+            self.__add_log_record("Match paused!")
         elif self.match.status == MatchStatus.PAUSED:
             self.match.unpause()
-            self.__add_log_record("Match unpaused!")
             self.ui_button_pause.setText("Pause")
+            self.__add_log_record("Match unpaused!")
 
     def set_ui_scores(self, ui):
         self.ui_scores = ui
@@ -103,7 +106,6 @@ class Server:
                               f"of team '{self.match.get_team_name(index)}'")
 
     def __add_log_record(self, record):
-        #self.match.add_log_record(record)
         self.ui_log.addItem(f"🌈 {record}")
         self.ui_log.scrollToBottom()
 
@@ -133,7 +135,7 @@ class Server:
         self.server_socket.bind((self.host, self.port))
 
         while True:
-            message, viewer = self.server_socket.recvfrom(self.UDP_MAX_SIZE)
+            message, viewer = self.server_socket.recvfrom(UDP_MAX_SIZE)
             decoded_message = message.decode('utf-8')
 
             if decoded_message == 'connect':

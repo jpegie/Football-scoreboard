@@ -1,7 +1,5 @@
-import datetime
 import threading
 import time as t
-
 from PyQt5.QtWidgets import QLabel
 
 
@@ -36,7 +34,7 @@ class Stopwatch:
         self.__paused = False
 
     def get_elapsed(self):
-        return self.time_elapsed
+        return self.__time_elapsed
 
     def get_elapsed_as_str(self):
         seconds = str(self.__time_elapsed[1])

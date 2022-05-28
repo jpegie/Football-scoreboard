@@ -170,6 +170,9 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="autoScrollMargin">
+     <number>0</number>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

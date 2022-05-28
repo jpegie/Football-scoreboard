@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from DataClasses.ClientAppClass import ClientApp
+from DataClasses.Client.ClientApp import ClientApp
 import sys
 
 

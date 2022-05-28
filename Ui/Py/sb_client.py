@@ -66,6 +66,7 @@ class Ui_MainWindow(object):
         self.Label_Time.setObjectName("Label_Time")
         self.List_Log = QtWidgets.QListWidget(self.centralwidget)
         self.List_Log.setGeometry(QtCore.QRect(20, 320, 361, 81))
+        self.List_Log.setAutoScrollMargin(0)
         self.List_Log.setObjectName("List_Log")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)

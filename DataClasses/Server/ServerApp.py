@@ -1,20 +1,18 @@
-from PyQt5 import QtGui, QtCore
-from PyQt5.QtGui import QColor, QPalette
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow
 
-import sb_server
-from DataClasses import ServerClass
+from Ui.Py import sb_server
+from DataClasses.Server import Server
 
 
 class ServerApp(QMainWindow, sb_server.Ui_MainWindow):
-    curr_server = ServerClass.Server()
+    curr_server = Server.Server()
     teams_set = [False, False]
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setup_bindings()
-        self.curr_server.listen()
 
         self.Button_SetTeam1.clicked.connect(lambda: self.enable_frames("SetTeam1"))
         self.Button_SetTeam2.clicked.connect(lambda: self.enable_frames("SetTeam2"))
@@ -33,9 +31,6 @@ class ServerApp(QMainWindow, sb_server.Ui_MainWindow):
             self.Frame_Team1.setEnabled(True)
             self.Frame_Team2.setEnabled(True)
             self.Frame_MatchManage.setEnabled(True)
-
-
-
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.curr_server.close()
@@ -58,8 +53,3 @@ class ServerApp(QMainWindow, sb_server.Ui_MainWindow):
         self.curr_server.set_ui_pause_button(self.Button_Pause)
         self.curr_server.set_ui_log(self.List_Log)
         self.curr_server.set_ui_surnames([self.TextBox_WhoGoaled1, self.TextBox_WhoGoaled2])
-
-
-
-
-

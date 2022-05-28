@@ -1,6 +1,7 @@
-import datetime
 from enum import Enum
-from DataClasses.StopwatchClass import Stopwatch
+
+from DataClasses.Common.Stopwatch import Stopwatch
+from DataClasses.Common.Team import Team
 
 
 class MatchStatus(Enum):
@@ -11,13 +12,10 @@ class MatchStatus(Enum):
     NO_MATCH = -1
 
 
-class Team:
-    name = ''
-    score = 0
-
-    def __init__(self, name='', score=0):
-        self.name = name
-        self.score = score
+class SlimMatchInfo:
+    time = "00:00"
+    teams = []
+    log = []
 
 
 class MatchInfo:
