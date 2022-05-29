@@ -53,23 +53,20 @@ class Client:
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-        while True:
-            self.server_socket.sendto('connect'.encode('utf-8'), self.server_addr)
-            try:
-                match_info_bin, sender = self.server_socket.recvfrom(UDP_MAX_SIZE)
-            except Exception as e:
-                print(f"Failed to receive data from server: {str(e)}")
-                return
-            match_info = pickle.loads(match_info_bin)
-            if match_info:
-                self.server_addr = sender
-                self.match_info = match_info
-                self.__start_listening()
-                self.__update_ui()
-                break
-            else:
-                print('Verification failed')
-            print('Trying again...')
+        self.server_socket.settimeout(5)
+        self.server_socket.sendto('connect'.encode('utf-8'), self.server_addr)
+        try:
+            match_info_bin, sender = self.server_socket.recvfrom(UDP_MAX_SIZE)
+        except Exception as e:
+            print(f"Failed to receive data from server: {str(e)}")
+            return
+        match_info = pickle.loads(match_info_bin)
+        if match_info:
+            self.server_addr = sender
+            self.match_info = match_info
+            self.__start_listening()
+            self.__update_ui()
+        self.server_socket.settimeout(None)
 
     def close(self):
         try:
