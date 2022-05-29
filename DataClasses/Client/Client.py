@@ -56,7 +56,7 @@ class Client:
         while True:
             self.server_socket.sendto('connect'.encode('utf-8'), self.server_addr)
             try:
-                match_info_bin, sender = self.server_socket.recvfrom(1)
+                match_info_bin, sender = self.server_socket.recvfrom(UDP_MAX_SIZE)
             except Exception as e:
                 print(f"Failed to receive data from server: {str(e)}")
                 return
